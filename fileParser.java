@@ -18,15 +18,14 @@ public class fileParser {
 	 * Output 	- an ArrayList of INSTRUCTIONS
 	 * Errors	- FileNotFoundException
 	 */
-	public static ArrayList<Instructions> instructionStrings(String inputFile) throws FileNotFoundException
+	public static ArrayList<Instructions> instructionStrings(String inputFile, ArrayList<Instructions> instr) throws FileNotFoundException
 	{
-		ArrayList<Instructions> instrStr = new ArrayList<Instructions>();	
 
 		File iF = new File(inputFile);
 		
-		instrStr = scanFile(iF);
+		instr = scanFile(iF, instr);
 		
-		return instrStr;
+		return instr;
 	}
 	
 	/*
@@ -43,7 +42,7 @@ public class fileParser {
 
 		File iF = new File(inputFile);
 		
-		scanFile(iF);
+		scanFile(iF, labelStr);
 		
 		return labelStr;
 	}
@@ -55,20 +54,19 @@ public class fileParser {
 	 * Output 	- n/a
 	 * Errors	- FileNotFoundException
 	 */
-	private static ArrayList<Instructions> scanFile(File inputFile) throws FileNotFoundException
+	private static ArrayList<Instructions> scanFile(File inputFile, ArrayList<Instructions> instr) throws FileNotFoundException
 	{
-		ArrayList<Instructions> tempList = new ArrayList<Instructions>();
 		Scanner scan = new Scanner(inputFile);
 		int lineCount = 0, instrCount = 1;
 		while(scan.hasNext())
 		{
 			
-			tempList = parseFile(scan.nextLine(), lineCount, instrCount);
+			instr = parseFile(scan.nextLine(), lineCount, instrCount, instr);
 	
 		}
 		scan.close();
 		
-		return tempList;
+		return instr;
 	}
 	
 	/*
@@ -78,9 +76,8 @@ public class fileParser {
 	 * Output 	- a string Object
 	 * Errors	- FileNotFoundException
 	 */
-	private static ArrayList<Instructions> parseFile(String line, int lineCount, int instrCount)
+	private static ArrayList<Instructions> parseFile(String line, int lineCount, int instrCount, ArrayList<Instructions> instr)
 	{
-		ArrayList<Instructions> tempList = new ArrayList<Instructions>();
 
 		// Handle empty lines
 		if(line.trim().isEmpty())
@@ -94,11 +91,11 @@ public class fileParser {
 		}
 		else
 		{
-			tempList = formatLine(line, lineCount, instrCount);
+			instr = formatLine(line, lineCount, instrCount, instr);
 			lineCount = lineCount + 1;
 			instrCount = instrCount + 1;
 		}
-		return tempList;
+		return instr;
 	}
 	
 	/*
@@ -107,15 +104,14 @@ public class fileParser {
 	 * Input 	- a File object of user input file 
 	 * Output 	- a string Object
 	 */
-	private static ArrayList<Instructions> formatLine(String line, int lineCount, int instrCount)
+	private static ArrayList<Instructions> formatLine(String line, int lineCount, int instrCount, ArrayList<Instructions> instr)
 	{
 		
-		ArrayList<Instructions> tempList = new ArrayList<Instructions>();
 		String formattedLine = formatHelper(line);
 
-		tempList = parseLine(formattedLine, lineCount, instrCount);
+		instr = parseLine(formattedLine, lineCount, instrCount, instr);
 		
-		return tempList;
+		return instr;
 	}
 	
 	/*
@@ -151,9 +147,8 @@ public class fileParser {
 	 * Input 	- a File object of user input file 
 	 * Output 	- a string Object
 	 */
-	private static ArrayList<Instructions> parseLine(String line, int lineCount, int instrCount)
+	private static ArrayList<Instructions> parseLine(String line, int lineCount, int instrCount, ArrayList<Instructions> instrAl)
 	{
-		ArrayList<Instructions> tempList = new ArrayList<Instructions>();
 		String instr = null;
 		
 		if(line.contains(":") && line.split(":").length > 1)
@@ -165,7 +160,7 @@ public class fileParser {
 		{
 			instr = parseInstruction(line).trim();
 			
-			if(addtoInstructionList(tempList, line, instr, lineCount, instrCount) == 1)
+			if(addtoInstructionList(instrAl, line, instr, lineCount, instrCount) == 1)
 			{
 				System.out.println(lineCount + ": " + "Invalid Instruction Found. " + instr + " is not valid");	
 				System.exit(1);
@@ -176,7 +171,7 @@ public class fileParser {
 			//add to label arrays
 		}
 
-		return tempList;
+		return instrAl;
 	}
 	
 	/*
