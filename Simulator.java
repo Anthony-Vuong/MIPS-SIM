@@ -7,19 +7,20 @@ class Simulator
 	
 	public static void runSim(String fileName)
 	{
-		// create new fileParser class - see class for details
-		//fileParser fp = new fileParser();
-		ArrayList<Instructions> instrStr = new ArrayList<Instructions>();	
-
-				
 		// create new ArrayList of instructions called instrStr
-		try {
+		ArrayList<Instructions> instrStr = new ArrayList<Instructions>();	
+		ArrayList<Instructions> labelStr = new ArrayList<Instructions>();	
+
+
+		try 
+		{
 			instrStr = fileParser.instructionStrings(fileName, instrStr);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			labelStr = fileParser.labelStrings(fileName, labelStr);
+		} 
+		catch (FileNotFoundException e)
+		{
 			e.printStackTrace();
 		}
-		//ArrayList<String> labelStr = fp.labelStrings(args[0]);
 
 		
 		for(Instructions s : instrStr)

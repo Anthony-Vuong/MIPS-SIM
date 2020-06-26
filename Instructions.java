@@ -3,6 +3,9 @@
 
 public class Instructions {
 	
+	public int lineCount;
+	
+	
 	public static String convertBinary(int num, int bin_length)
 	{
 		int binary[] = new int[bin_length];
@@ -150,6 +153,7 @@ class add extends Instructions
 	{
 		return "000000 " + regOpcode(this.rs) + " " + regOpcode(this.rt) + " " + regOpcode(this.rd) + " 00000 100000";
 	}
+	
 	   
 }
 
@@ -344,7 +348,7 @@ class or extends Instructions
 class sll extends Instructions
 {
 	String rt, immd, rd;
-	int lineCount, instrCount;
+	public int lineCount, instrCount;
 	   
 	public sll(String destReg, String Reg1, String Immed, int ic, int lc)
 	{
@@ -352,6 +356,7 @@ class sll extends Instructions
 		rt = Reg1;
 		immd = Immed;
 		lineCount = lc;
+		System.out.println("SLL: " + lineCount);
 		instrCount = ic;
 	}
 	
@@ -359,7 +364,7 @@ class sll extends Instructions
 	{
 		return "000000 " + "00000 " + regOpcode(this.rt)  + " " + regOpcode(this.rd) + " " +  convertBinary(Integer.parseInt(this.immd), 5) + " 000000";
 	}
-   
+	
 }
 
 

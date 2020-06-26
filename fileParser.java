@@ -10,6 +10,10 @@ import java.util.Scanner;
  */
 public class fileParser {
 	
+	public static int lineCount = 0;
+	public static int instrCount = 1;
+
+	
 	/*
 	 * Method 	- parses a text file by line by line
 	 * Type 	- public
@@ -36,15 +40,14 @@ public class fileParser {
 	 * Output 	- an ArrayList of LABELS
 	 * Errors	- FileNotFoundException
 	 */
-	public ArrayList<Instructions> labelStrings(String inputFile) throws FileNotFoundException
+	public static ArrayList<Instructions> labelStrings(String inputFile, ArrayList<Instructions> labels) throws FileNotFoundException
 	{
-		ArrayList<Instructions> labelStr = new ArrayList<Instructions>();	
 
 		File iF = new File(inputFile);
 		
-		scanFile(iF, labelStr);
+		labels = scanFile(iF, labels);
 		
-		return labelStr;
+		return labels;
 	}
 	
 	/*
@@ -57,12 +60,10 @@ public class fileParser {
 	private static ArrayList<Instructions> scanFile(File inputFile, ArrayList<Instructions> instr) throws FileNotFoundException
 	{
 		Scanner scan = new Scanner(inputFile);
-		int lineCount = 0, instrCount = 1;
+		//int lineCount = 0, instrCount = 1;
 		while(scan.hasNext())
 		{
-			
-			instr = parseFile(scan.nextLine(), lineCount, instrCount, instr);
-	
+			instr = parseFile(scan.nextLine(), instr);
 		}
 		scan.close();
 		
@@ -76,7 +77,7 @@ public class fileParser {
 	 * Output 	- a string Object
 	 * Errors	- FileNotFoundException
 	 */
-	private static ArrayList<Instructions> parseFile(String line, int lineCount, int instrCount, ArrayList<Instructions> instr)
+	private static ArrayList<Instructions> parseFile(String line, ArrayList<Instructions> instr)
 	{
 
 		// Handle empty lines
@@ -91,7 +92,7 @@ public class fileParser {
 		}
 		else
 		{
-			instr = formatLine(line, lineCount, instrCount, instr);
+			instr = formatLine(line, instr);
 			lineCount = lineCount + 1;
 			instrCount = instrCount + 1;
 		}
@@ -104,12 +105,12 @@ public class fileParser {
 	 * Input 	- a File object of user input file 
 	 * Output 	- a string Object
 	 */
-	private static ArrayList<Instructions> formatLine(String line, int lineCount, int instrCount, ArrayList<Instructions> instr)
+	private static ArrayList<Instructions> formatLine(String line, ArrayList<Instructions> instr)
 	{
 		
 		String formattedLine = formatHelper(line);
 
-		instr = parseLine(formattedLine, lineCount, instrCount, instr);
+		instr = parseLine(formattedLine, instr);
 		
 		return instr;
 	}
@@ -147,7 +148,7 @@ public class fileParser {
 	 * Input 	- a File object of user input file 
 	 * Output 	- a string Object
 	 */
-	private static ArrayList<Instructions> parseLine(String line, int lineCount, int instrCount, ArrayList<Instructions> instrAl)
+	private static ArrayList<Instructions> parseLine(String line, ArrayList<Instructions> instrAl)
 	{
 		String instr = null;
 		
